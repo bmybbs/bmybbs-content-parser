@@ -1,0 +1,19 @@
+{
+	"name": "@bmybbs/bmybbs-content-parser",
+	"version": "0.0.1",
+	"description": "This is a library to convert bmybbs content, including articles and mails, to HTML format.",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/bmybbs/bmybbs-content-parser.git"
+	},
+	"author": "Yang Shen",
+	"license": "MIT",
+	"bugs": {
+		"url": "https://github.com/bmybbs/bmybbs-content-parser/issues"
+	},
+	"homepage": "https://github.com/bmybbs/bmybbs-content-parser"
+}
