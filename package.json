@@ -2,9 +2,10 @@
 	"name": "@bmybbs/bmybbs-content-parser",
 	"version": "0.0.1",
 	"description": "This is a library to convert bmybbs content, including articles and mails, to HTML format.",
-	"main": "index.js",
+	"main": "src/index.js",
+	"type": "module",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1"
+		"test": "mocha"
 	},
 	"repository": {
 		"type": "git",
@@ -15,5 +16,8 @@
 	"bugs": {
 		"url": "https://github.com/bmybbs/bmybbs-content-parser/issues"
 	},
-	"homepage": "https://github.com/bmybbs/bmybbs-content-parser"
+	"homepage": "https://github.com/bmybbs/bmybbs-content-parser",
+	"devDependencies": {
+		"mocha": "^8.2.1"
+	}
 }
