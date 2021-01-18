@@ -2,7 +2,6 @@ import { isObject, isText } from "./utils.js"
 import plainTextParser from "./parsers/plainTextParser.js"
 import codeBlockParser from "./parsers/codeblockParser.js"
 import attachParser    from "./parsers/attachParser.js"
-import equationParser  from "./parsers/equationParser.js"
 
 const lineParser = function(line, states, attaches) {
 	// markdown 方式的代码块
@@ -20,12 +19,6 @@ const lineParser = function(line, states, attaches) {
 	// 这里可能 attachname 不存在，内部切换为普通文本
 	if (line.startsWith("#attach ")) {
 		return attachParser(line, states, attaches);
-	}
-
-	// 暂定格式为 #equation equation_content
-	// 和附件一样，失败情况也转换为普通文本
-	if (line.startsWith("#equation ")) {
-		return equationParser(line, states);
 	}
 };
 
@@ -50,10 +43,13 @@ export default function(content) {
 			content.text.split("\n").forEach(line => {
 				let line_html = lineParser(line, states, attaches);
 				if (line_html != null) {
-					if (Array.isArray(line_html))
-						html.concat(line_html);
-					else
+					if (Array.isArray(line_html)) {
+						line_html.forEach((el) => {
+							html.push(el);
+						});
+					} else {
 						html.push(line_html);
+					}
 				}
 			});
 		}
