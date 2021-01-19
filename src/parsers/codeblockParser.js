@@ -19,11 +19,11 @@ export default async function(line, states) {
 			const lang = line.substring(4).toLowerCase();
 			const langstr = langSets.has(lang) ? lang : langFallback;
 
-			return `<pre><code class=\"language-${langstr}\">`;
+			return `<pre><code class="language-${langstr}">`;
 		}
 	} else {
 		// 一般情况则追加原始行以及换行符到 states.code.source 中
-		return [escape(line), "\n"];
+		return [escapeHtml(line), "\n"];
 	}
-};
+}
 
