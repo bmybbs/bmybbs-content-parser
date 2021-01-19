@@ -5,6 +5,7 @@
 	"main": "src/index.js",
 	"type": "module",
 	"scripts": {
+		"pretest": "eslint --ignore-path .gitignore .",
 		"test": "mocha"
 	},
 	"repository": {
@@ -18,6 +19,7 @@
 	},
 	"homepage": "https://github.com/bmybbs/bmybbs-content-parser",
 	"devDependencies": {
+		"eslint": "^7.18.0",
 		"mocha": "^8.2.1"
 	},
 	"dependencies": {
