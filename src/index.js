@@ -3,7 +3,7 @@ import plainTextParser from "./parsers/plainTextParser.js"
 import codeBlockParser from "./parsers/codeblockParser.js"
 import attachParser    from "./parsers/attachParser.js"
 
-const lineParser = function(line, states, attaches) {
+const lineParser = (line, states, attaches) => {
 	// markdown 方式的代码块
 	// 有关 codeBlock 的格式处理，其中状态改变也交给 codeBlockParser 维护
 	if (states.isInCodeBlock || line.startsWith("```")) {
@@ -22,7 +22,7 @@ const lineParser = function(line, states, attaches) {
 	}
 };
 
-export default function(content) {
+export default async (content) => {
 	let html = [],
 		attaches = new Map(),
 		states = {
@@ -33,25 +33,28 @@ export default function(content) {
 	if (isObject(content)) {
 		if (Array.isArray(content.attaches)) {
 			content.attaches.forEach(attach => {
-				if (isObject(attach) && isText(attach.name) && isText(attach.link)) {
-					attaches.set(attach.name, attach.link);
+				// attach: { name: String, link: String, signature: Array }
+				if (isObject(attach) && isText(attach.name) && isText(attach.link) && Array.isArray(attach.signature)) {
+					attaches.set(attach.name, attach);
 				}
 			});
 		}
 
 		if (isText(content.text)) {
-			content.text.split("\n").forEach(line => {
-				let line_html = lineParser(line, states, attaches);
-				if (line_html != null) {
-					if (Array.isArray(line_html)) {
-						line_html.forEach((el) => {
+			const line_array = content.text.split("\n");
+			for (const line of line_array) {
+				const result = await lineParser(line, states, attaches);
+
+				if (result != null) {
+					if (Array.isArray(result)) {
+						result.forEach((el) => {
 							html.push(el);
 						});
-					} else {
-						html.push(line_html);
+					} else if (isText(result)) {
+						html.push(result);
 					}
 				}
-			});
+			}
 		}
 	}
 

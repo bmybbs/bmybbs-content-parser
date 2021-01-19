@@ -19,5 +19,8 @@
 	"homepage": "https://github.com/bmybbs/bmybbs-content-parser",
 	"devDependencies": {
 		"mocha": "^8.2.1"
+	},
+	"dependencies": {
+		"file-type": "^16.1.0"
 	}
 }
