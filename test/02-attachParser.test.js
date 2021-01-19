@@ -1,8 +1,7 @@
-import assert from "assert"
 import parser from "../src/index.js"
 
 describe("Attachment Parser Test", () => {
-	it("mp4 attach", async () => {
+	test("mp4 attach", async () => {
 		let content = {
 			text: "#attach foo.mp4",
 			attaches: [{
@@ -16,10 +15,10 @@ describe("Attachment Parser Test", () => {
 			"</article>",
 		].join("");
 
-		assert.strictEqual(await parser(content), result);
+		expect(await parser(content)).toBe(result);
 	});
 
-	it("no attach", async () => {
+	test("no attach", async () => {
 		let content = {
 			text: "#attach foo.mp4",
 			attaches: []
@@ -29,7 +28,7 @@ describe("Attachment Parser Test", () => {
 			"</article>",
 		].join("");
 
-		assert.strictEqual(await parser(content), result);
+		expect(await parser(content)).toBe(result);
 	});
 });
 

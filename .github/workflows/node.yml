@@ -23,5 +23,9 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Run tests
-        run: npm test
+        run: NODE_OPTIONS=--experimental-vm-modules npm run test
+      - name: Upload coverage report
+        run: cat coverage/lcov.info | COVERALLS_REPO_TOKEN=$TOKEN node_modules/coveralls/bin/coveralls.js
+        env:
+          TOKEN: ${{ secrets.COVERALLS_REPO_TOKEN }}
 
