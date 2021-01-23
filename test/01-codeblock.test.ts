@@ -1,9 +1,9 @@
-import parser from "../src/index.js"
+import parser from "../src/index"
 
 // 以 parser 为入口，针对 code block 单一功能点的测试
 describe("Code Block Parser Test", () => {
 	test("empty code block", async () => {
-		let content = {
+		const content = {
 			text: "```\n```",
 			attaches: []
 		}, result = [

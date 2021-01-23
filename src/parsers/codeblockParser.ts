@@ -1,10 +1,7 @@
-import { escapeHtml, langSets, langFallback } from "../utils.js"
+import { LineParser } from "../definitions"
+import { escapeHtml, langSets, langFallback } from "../utils"
 
-/**
- * 代码块解析
- * @return string | null
- */
-export default async function(line, states) {
+const codeblockParser: LineParser = async (line, states) => {
 	if (line.startsWith("```")) {
 		// 处理起始、终止
 		if (states.isInCodeBlock) {
@@ -26,4 +23,6 @@ export default async function(line, states) {
 		return [escapeHtml(line), "\n"];
 	}
 }
+
+export default codeblockParser;
 
