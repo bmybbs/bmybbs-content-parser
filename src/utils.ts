@@ -1,18 +1,10 @@
-const escapeHtml = function(unsafe) {
+const escapeHtml = function(unsafe: string) {
 	return unsafe
 		.replace(/&/g, "&amp;")
 		.replace(/</g, "&lt;")
 		.replace(/>/g, "&gt;")
 		.replace(/"/g, "&quot;")
 		.replace(/'/g, "&#039;");
-};
-
-const isObject = function(o) {
-	return ((o != null) && (typeof o === "object"));
-};
-
-const isText = function(s) {
-	return (typeof s === "string" || s instanceof String);
 };
 
 // TODO ref: https://prismjs.com/#supported-languages
@@ -23,8 +15,6 @@ langSets.add("html");
 
 export {
 	escapeHtml,
-	isObject,
-	isText,
 	langSets,
 	langFallback,
 };

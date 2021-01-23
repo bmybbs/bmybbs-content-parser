@@ -1,6 +1,6 @@
 import {
 	escapeHtml,
-} from "../src/utils.js"
+} from "../src/utils"
 
 describe("Utils Test", () => {
 	test("escape html unsafe chars", () => {
