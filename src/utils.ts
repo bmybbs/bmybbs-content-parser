@@ -1,4 +1,4 @@
-const escapeHtml = function(unsafe: string) {
+const escapeHtml = function(unsafe: string): string {
 	return unsafe
 		.replace(/&/g, "&amp;")
 		.replace(/</g, "&lt;")

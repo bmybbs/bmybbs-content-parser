@@ -4,7 +4,7 @@ import {
 
 describe("Utils Test", () => {
 	test("escape html unsafe chars", () => {
-		let str = "<>&\"'";
+		const str = "<>&\"'";
 		expect(escapeHtml(str)).toBe("&lt;&gt;&amp;&quot;&#039;");
 	});
 });
