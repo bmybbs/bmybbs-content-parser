@@ -41,5 +41,32 @@ describe("Plain Text Parser Test", () => {
 		result[1] = `<span class="${CLASS_PREFIX} ${CLASS_PREFIX}-blink"></span>`
 		expect(await parser(content)).toBe(result.join(""));
 	});
+
+	test("ansi groups", async () => {
+		let content = { text: "\x1b[1;31;41mfoobar\x1b[0m", attaches: [] },
+			result = [
+			"<article>",
+			`<span class="${CLASS_PREFIX} ${CLASS_PREFIX}-bold">`,
+			`<span class="${CLASS_PREFIX} ${CLASS_PREFIX}-fc1">`,
+			`<span class="${CLASS_PREFIX} ${CLASS_PREFIX}-bg1">`,
+			"foobar",
+			"</span></span></span>",
+			"</article>"
+		];
+		expect(await parser(content)).toBe(result.join(""));
+
+		content = { text: "\x1b[1;31;41;32mfoobar\x1b[0m", attaches: [] };
+		result = [
+			"<article>",
+			`<span class="${CLASS_PREFIX} ${CLASS_PREFIX}-bold">`,
+			`<span class="${CLASS_PREFIX} ${CLASS_PREFIX}-fc1">`,
+			`<span class="${CLASS_PREFIX} ${CLASS_PREFIX}-bg1">`,
+			`<span class="${CLASS_PREFIX} ${CLASS_PREFIX}-fc2">`,
+			"foobar",
+			"</span></span></span></span>",
+			"</article>"
+		];
+		expect(await parser(content)).toBe(result.join(""));
+	});
 });
 
