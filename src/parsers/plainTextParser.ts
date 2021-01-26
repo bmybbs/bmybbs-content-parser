@@ -36,7 +36,7 @@ const pushSpanWithClass = (stack: string[], classname: string): string => {
 	return pushTag(stack, "span", classname);
 }
 
-const closeTag = (stack: string[], tag: string): string => {
+/*const closeTag = (stack: string[], tag: string): string => {
 	let last: string = null;
 
 	if (stack.slice(-1)[0] === tag) {
@@ -44,7 +44,7 @@ const closeTag = (stack: string[], tag: string): string => {
 	}
 
 	return (last) ? `</${tag}>` : null;
-}
+}*/
 
 const tokenize = (text: string, callback: TokenizeCallback): number[] => {
 	let ansiMatch = false;
@@ -54,11 +54,11 @@ const tokenize = (text: string, callback: TokenizeCallback): number[] => {
 	/*removeXterm256: HandlerFunction = (_, g1) => { // eslint-disable-line @typescript-eslint/no-unused-vars
 		callback(TokenType.TOKEN_XTERM256, g1);
 		return "";
-	},*/
+	},
 	newline: HandlerFunction = (m, _) => { // eslint-disable-line @typescript-eslint/no-unused-vars
 		callback(TokenType.TOKEN_TEXT, m);
 		return "";
-	},
+	},*/
 	ansiMess: HandlerFunction = (_, g1) => {
 		ansiMatch = true;
 		if (g1.trim().length === 0) {
@@ -98,12 +98,12 @@ const tokenize = (text: string, callback: TokenizeCallback): number[] => {
 		pattern: /^\x1b\[38;5;(\d+)m/,
 		sub: remove // removeXterm256
 	}, {
-		pattern: /^\n/,
+		/*pattern: /^\n/,
 		sub: newline
 	},{
 		pattern: /^\r+\n/,
 		sub: newline
-	}, {
+	}, {*/
 		pattern: /^\x1b\[((?:\d{1,3};?)+|)m/,
 		sub: ansiMess
 	}, {
@@ -186,22 +186,25 @@ const resetStyles = (stack: string[]): string => {
 const handleDisplay = (stack: string[], codeStr: string): string => {
 	const code = parseInt(codeStr, 10);
 	const codeMap: Map<number, () => string> = new Map();
-	codeMap.set(-1, () => "<br />");
-	codeMap.set(0, () => stack.length && resetStyles(stack)); // TODO
+	//codeMap.set(-1, () => "<br />");
+	codeMap.set(0, () => stack.length && resetStyles(stack));
 	codeMap.set(1, () => pushSpanWithClass(stack, `${CLASS_PREFIX} ${CLASS_PREFIX}-bold`));
 	codeMap.set(3, () => pushSpanWithClass(stack, `${CLASS_PREFIX} ${CLASS_PREFIX}-italic`));
 	codeMap.set(4, () => pushSpanWithClass(stack, `${CLASS_PREFIX} ${CLASS_PREFIX}-underline`));
-	codeMap.set(8, () => pushSpanWithClass(stack, `${CLASS_PREFIX} ${CLASS_PREFIX}-none`));
-	codeMap.set(9, () => pushSpanWithClass(stack, `${CLASS_PREFIX} ${CLASS_PREFIX}-strike`));
-	codeMap.set(22, () => pushSpanWithClass(stack, `${CLASS_PREFIX} ${CLASS_PREFIX}-normal`));
-	codeMap.set(23, () => closeTag(stack, "span"));
-	codeMap.set(24, () => closeTag(stack, "span"));
+	//codeMap.set(8, () => pushSpanWithClass(stack, `${CLASS_PREFIX} ${CLASS_PREFIX}-none`));
+	//codeMap.set(9, () => pushSpanWithClass(stack, `${CLASS_PREFIX} ${CLASS_PREFIX}-strike`));
+	//codeMap.set(22, () => pushSpanWithClass(stack, `${CLASS_PREFIX} ${CLASS_PREFIX}-normal`));
+	//codeMap.set(23, () => closeTag(stack, "span"));
+	//codeMap.set(24, () => closeTag(stack, "span"));
 	// codeMap.set(39, () => ""); // TODO
 	// codeMap.set(49, () => ""); // TODO
-	codeMap.set(53, () => pushSpanWithClass(stack, `${CLASS_PREFIX} ${CLASS_PREFIX}-overline`));
+	//codeMap.set(53, () => pushSpanWithClass(stack, `${CLASS_PREFIX} ${CLASS_PREFIX}-overline`));
 
 	let result: string, color: number;
 	if (codeMap.has(code)) {
+		/*if (code == 23 || code == 24) {
+			console.log("gotcha");
+		}*/
 		result = codeMap.get(code)();
 	} else if (4 < code && code < 7) {
 		result = pushSpanWithClass(stack, `${CLASS_PREFIX} ${CLASS_PREFIX}-blink`);
@@ -211,13 +214,13 @@ const handleDisplay = (stack: string[], codeStr: string): string => {
 	} else if (39 < code && code < 48) {
 		color = code - 40;
 		result = pushSpanWithClass(stack, `${CLASS_PREFIX} ${CLASS_PREFIX}-bg${color}`);
-	} else if (89 < code && code < 98) {
+	}/* else if (89 < code && code < 98) {
 		color = code - 80;
 		result = pushSpanWithClass(stack, `${CLASS_PREFIX} ${CLASS_PREFIX}-fc${color}`);
 	} else if (99 < code && code < 108) {
 		color = code - 100;
 		result = pushSpanWithClass(stack, `${CLASS_PREFIX} ${CLASS_PREFIX}-bg${color}`);
-	}
+	}*/
 
 	return result
 }
@@ -229,11 +232,11 @@ const generateOutput = (stack: string[], token: TokenType, data: string): string
 		result = pushText(data);
 	} else if (token === TokenType.TOKEN_DISPLAY) {
 		result = handleDisplay(stack, data);
-	} else if (token === TokenType.TOKEN_XTERM256) {
+	}/* else if (token === TokenType.TOKEN_XTERM256) {
 		result = ""; // TODO
 	} else if (token === TokenType.TOKEN_RGB) {
 		result = ""; // TODO
-	}
+	}*/
 
 	return result;
 }
