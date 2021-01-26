@@ -252,6 +252,10 @@ const plainTextParser: LineParser = async (line, states) => {
 			buf.push(output);
 		}
 	});
+
+	if (stack.length) {
+		buf.push(resetStyles(stack));
+	}
 	return buf;
 }
 

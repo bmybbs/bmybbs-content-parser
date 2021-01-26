@@ -68,5 +68,32 @@ describe("Plain Text Parser Test", () => {
 		];
 		expect(await parser(content)).toBe(result.join(""));
 	});
+
+	test("ansi half open", async () => {
+		let content = { text: "\x1b[1;31;41mfoobar", attaches: [] },
+			result = [
+			"<article>",
+			`<span class="${CLASS_PREFIX} ${CLASS_PREFIX}-bold">`,
+			`<span class="${CLASS_PREFIX} ${CLASS_PREFIX}-fc1">`,
+			`<span class="${CLASS_PREFIX} ${CLASS_PREFIX}-bg1">`,
+			"foobar",
+			"</span></span></span>",
+			"</article>"
+		];
+		expect(await parser(content)).toBe(result.join(""));
+
+		content = { text: "\x1b[1;31;41;32mfoobar\x1b[0m", attaches: [] };
+		result = [
+			"<article>",
+			`<span class="${CLASS_PREFIX} ${CLASS_PREFIX}-bold">`,
+			`<span class="${CLASS_PREFIX} ${CLASS_PREFIX}-fc1">`,
+			`<span class="${CLASS_PREFIX} ${CLASS_PREFIX}-bg1">`,
+			`<span class="${CLASS_PREFIX} ${CLASS_PREFIX}-fc2">`,
+			"foobar",
+			"</span></span></span></span>",
+			"</article>"
+		];
+		expect(await parser(content)).toBe(result.join(""));
+	});
 });
 
