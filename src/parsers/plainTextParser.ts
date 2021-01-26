@@ -243,7 +243,7 @@ const generateOutput = (stack: string[], token: TokenType, data: string): string
 
 const plainTextParser: LineParser = async (line, states) => {
 	const stack: string[] = [];
-	const buf: string[] = [];
+	const buf: string[] = ["<p>"];
 	states;
 	tokenize(line, (token, data) => {
 		const output = generateOutput(stack, token, data);
@@ -256,6 +256,7 @@ const plainTextParser: LineParser = async (line, states) => {
 	if (stack.length) {
 		buf.push(resetStyles(stack));
 	}
+	buf.push("</p>");
 	return buf;
 }
 

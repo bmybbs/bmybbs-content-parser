@@ -25,7 +25,9 @@ describe("Attachment Parser Test", () => {
 			attaches: []
 		}, result = [
 			"<article>",
+			"<p>",
 			"#attach foo.mp4",
+			"</p>",
 			"</article>",
 		].join("");
 
