@@ -1,18 +1,18 @@
 import { LineParser } from "../definitions"
 import { escapeHtml, langSets, langFallback } from "../utils"
 
-const codeblockParser: LineParser = async (line, states) => {
+const codeblockParser: LineParser = async (line, config) => {
 	if (line.startsWith("```")) {
 		// 处理起始、终止
-		if (states.isInCodeBlock) {
-			states.isInCodeBlock = false;
+		if (config.states.isInCodeBlock) {
+			config.states.isInCodeBlock = false;
 
 			// TODO 恢复之前的状态
 			return "</code></pre>";
 		} else {
 			// TODO 终止之前的状态
 
-			states.isInCodeBlock = true;
+			config.states.isInCodeBlock = true;
 			const lang = line.substring(4).toLowerCase();
 			const langstr = langSets.has(lang) ? lang : langFallback;
 

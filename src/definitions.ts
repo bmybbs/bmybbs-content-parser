@@ -13,6 +13,11 @@ export interface BMYContent {
 	attaches: Attach[];
 }
 
-export type LineParser = (line: string, states: ParseStates, attaches?: Map<string, Attach>) => Promise<string | string[]>;
+export interface BMYParserConfig {
+	states: ParseStates;
+	attaches: Map<string, Attach>;
+}
+
+export type LineParser = (line: string, config: BMYParserConfig) => Promise<string | string[]>;
 
 export type BMYParser = (content: BMYContent) => Promise<string>;
