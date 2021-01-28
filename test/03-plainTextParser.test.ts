@@ -103,5 +103,20 @@ describe("Plain Text Parser Test", () => {
 		];
 		expect(await parser(content)).toBe(result.join(""));
 	});
+
+	test("ansi with line break", async () => {
+		const content = { text: "\x1b[31mfoo\nbar\x1b[0m", attaches: [] },
+			result = [
+			"<article>",
+			"<p>",
+			`<span class="${CLASS_PREFIX} ${CLASS_PREFIX}-fc1">foo</span>`,
+			"</p>",
+			"<p>",
+			`bar`,
+			"</p>",
+			"</article>"
+		];
+		expect(await parser(content)).toBe(result.join(""));
+	});
 });
 
