@@ -2,13 +2,13 @@ import FileType from "file-type";
 import { LineParser } from "../definitions"
 import plainTextParser from "./plainTextParser"
 
-const attachParser: LineParser = async (line, states, attaches) => {
+const attachParser: LineParser = async (line, config) => {
 	const attachname = line.substring(8);
-	if (attachname === "" || !attaches.has(attachname)) {
-		return await plainTextParser(line, states);
+	if (attachname === "" || !config.attaches.has(attachname)) {
+		return await plainTextParser(line, config);
 	}
 
-	const attach = attaches.get(attachname);
+	const attach = config.attaches.get(attachname);
 	const data = await FileType.fromBuffer(attach.signature);
 
 	if (data.mime === "video/mp4") {
