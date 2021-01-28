@@ -241,7 +241,8 @@ const generateOutput = (stack: string[], token: TokenType, data: string): string
 	return result;
 }
 
-const plainTextParser: LineParser = async (line, _) => {
+const plainTextParser: LineParser = async (line, _) => { // eslint-disable-line @typescript-eslint/no-unused-vars
+
 	const stack: string[] = [];
 	const buf: string[] = ["<p>"];
 	tokenize(line, (token, data) => {
