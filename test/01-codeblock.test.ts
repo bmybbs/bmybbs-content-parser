@@ -15,6 +15,19 @@ describe("Code Block Parser Test", () => {
 		expect(await parser(content)).toBe(result);
 	});
 
+	test("code block with lines", async () => {
+		const content = { text: "```\nvar i = 42;\n```", attaches: [] },
+			result = [
+			"<article>",
+			"<pre><code class=\"language-markup\">",
+			"var i = 42;\n",
+			"</code></pre>",
+			"</article>"
+		].join("");
+
+		expect(await parser(content)).toBe(result);
+	});
+
 	// TODO
 });
 

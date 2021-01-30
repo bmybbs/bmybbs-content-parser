@@ -33,5 +33,24 @@ describe("Attachment Parser Test", () => {
 
 		expect(await parser(content)).toBe(result);
 	});
+
+	test("img attach", async () => {
+		const signature = [0xFF, 0xD8, 0xFF, 0xDB];
+		const content = {
+			text: "#attach foo.jpg",
+			attaches: [{
+				name: "foo.jpg",
+				link: "http://example.com",
+				signature: new Uint8Array(signature),
+			}]
+		},
+		result = [
+			"<article>",
+			"<img src=\"http://example.com\">",
+			"</article>"
+		].join("");
+
+		expect(await parser(content)).toBe(result);
+	});
 });
 
