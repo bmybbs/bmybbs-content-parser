@@ -1,7 +1,7 @@
 import { LineParser } from "../definitions"
 import { escapeHtml, langSets, langFallback } from "../utils"
 
-const codeblockParser: LineParser = async (line, config) => {
+const codeblockParser: LineParser = (line, config) => {
 	if (line.startsWith("```")) {
 		// 处理起始、终止
 		if (config.states.isInCodeBlock) {

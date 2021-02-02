@@ -1,4 +1,3 @@
-import FileType from "file-type";
 import { LineParser } from "../definitions"
 import plainTextParser from "./plainTextParser"
 
@@ -258,18 +257,18 @@ const getFileType = (signature: number[], filename: string): AttachClass => {
 	return file_type;
 }
 
-const attachParser: LineParser = async (line, config) => {
+const attachParser: LineParser = (line, config) => {
 	const attachname = line.substring(8);
 	if (attachname === "" || !config.attaches.has(attachname)) {
-		return await plainTextParser(line, config);
+		return plainTextParser(line, config);
 	}
 
 	const attach = config.attaches.get(attachname);
-	const data = await FileType.fromBuffer(attach.signature);
+	const attach_type = getFileType(attach.signature, attach.name);
 
-	if (data.mime === "video/mp4") {
+	if (attach_type.category === AttachCategory.VIDEO) {
 		return `<video controls src="${attach.link}" />`;
-	} else if (data.mime.startsWith("image/")) {
+	} else if (attach_type.category === AttachCategory.IMAGE) {
 		return `<img src="${attach.link}">`;
 	} else {
 		return `<a href="${attach.link}" target="_blank">${attach.name}</a>`;

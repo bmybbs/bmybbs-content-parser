@@ -1,14 +1,13 @@
 import parser from "../src/index"
 
 describe("Attachment Parser Test", () => {
-	test("mp4 attach", async () => {
-		const signature = [0x00, 0x00, 0x00, 0x18, 0x66, 0x74, 0x79, 0x70, 0x69, 0x73, 0x6F, 0x6D];
+	test("mp4 attach", () => {
 		const content = {
 			text: "#attach foo.mp4",
 			attaches: [{
 				name: "foo.mp4",
 				link: "http://example.com",
-				signature: new Uint8Array(signature),
+				signature: [0x00, 0x00, 0x00, 0x18, 0x66, 0x74, 0x79, 0x70, 0x69, 0x73, 0x6F, 0x6D],
 			}]
 		}, result = [
 			"<article>",
@@ -16,10 +15,10 @@ describe("Attachment Parser Test", () => {
 			"</article>",
 		].join("");
 
-		expect(await parser(content)).toBe(result);
+		expect(parser(content)).toBe(result);
 	});
 
-	test("no attach", async () => {
+	test("no attach", () => {
 		const content = {
 			text: "#attach foo.mp4",
 			attaches: []
@@ -31,17 +30,16 @@ describe("Attachment Parser Test", () => {
 			"</article>",
 		].join("");
 
-		expect(await parser(content)).toBe(result);
+		expect(parser(content)).toBe(result);
 	});
 
-	test("img attach", async () => {
-		const signature = [0xFF, 0xD8, 0xFF, 0xDB];
+	test("img attach", () => {
 		const content = {
 			text: "#attach foo.jpg",
 			attaches: [{
 				name: "foo.jpg",
 				link: "http://example.com",
-				signature: new Uint8Array(signature),
+				signature: [0xFF, 0xD8, 0xFF, 0xDB],
 			}]
 		},
 		result = [
@@ -50,7 +48,7 @@ describe("Attachment Parser Test", () => {
 			"</article>"
 		].join("");
 
-		expect(await parser(content)).toBe(result);
+		expect(parser(content)).toBe(result);
 	});
 });
 

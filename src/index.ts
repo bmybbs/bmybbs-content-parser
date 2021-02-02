@@ -1,7 +1,7 @@
 import { BMYParser, ParseStates, Attach } from "./definitions"
 import lineParser from "./parsers/lineParser"
 
-const bmyParser: BMYParser = async (content) => {
+const bmyParser: BMYParser = (content) => {
 	const html = [],
 		attaches: Map<string, Attach> = new Map(),
 		states: ParseStates = {
@@ -15,7 +15,7 @@ const bmyParser: BMYParser = async (content) => {
 
 	const line_array = content.text.split("\n");
 	for (const line of line_array) {
-		const result = await lineParser(line, { states, attaches });
+		const result = lineParser(line, { states, attaches });
 		if (Array.isArray(result)) {
 			result.forEach((el) => {
 				html.push(el);
