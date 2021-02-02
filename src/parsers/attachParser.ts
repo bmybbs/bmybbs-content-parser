@@ -64,12 +64,6 @@ const getFileType = (signature: number[], filename: string): AttachClass => {
 	};
 	// signature 姑且认定为是一个具有 { 10 } 个元素的数组
 	switch (signature[0]) {
-	case 0x00:
-		if (isArrayEqual(signature, 1, [0x00, 0x00, 0x20, 0x66, 0x74, 0x79, 0x70, 0x69, 0x73])) {
-				file_type.category = AttachCategory.VIDEO;
-				file_type.type = AttachType.MP4;
-			}
-		break;
 	case 0x04:
 		if (isArrayEqual(signature, 1, [0x22, 0x4D, 0x18])) { // lz4
 			file_type.category = AttachCategory.FILE;
@@ -153,7 +147,7 @@ const getFileType = (signature: number[], filename: string): AttachClass => {
 		if (isArrayEqual(signature, 1, [0x4B, 0x03, 0x04])
 			|| isArrayEqual(signature, 1, [0x4B, 0x05, 0x06])
 			|| isArrayEqual(signature, 1, [0x4B, 0x07, 0x08])) {
-			let arr = filename.split("."),
+			const arr = filename.split("."),
 				ext = arr[arr.length - 1];
 			switch(ext) {
 			case "zip":
@@ -252,6 +246,11 @@ const getFileType = (signature: number[], filename: string): AttachClass => {
 			file_type.type = AttachType.JPG;
 		}
 		break;
+	}
+
+	if (isArrayEqual(signature, 4, [0x66, 0x74, 0x79, 0x70, 0x69, 0x73])) {
+		file_type.category = AttachCategory.VIDEO;
+		file_type.type = AttachType.MP4;
 	}
 
 	return file_type;
