@@ -113,7 +113,8 @@ const getFileType = (signature: number[], filename: string): AttachClass => {
 		}
 		break;
 	case 0x47:
-		if (isArrayEqual(signature, 1, [0x49, 0x46, 0x37])) {
+		if (isArrayEqual(signature, 1, [0x49, 0x46, 0x37])
+			|| isArrayEqual(signature, 1, [0x49, 0x46, 0x38])) {
 			file_type.category = AttachCategory.IMAGE;
 			file_type.type = AttachType.GIF;
 		}
