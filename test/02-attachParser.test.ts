@@ -1,7 +1,7 @@
 import parser from "../src/index"
 
 describe("Attachment Parser Test", () => {
-	test("mp4 attach", () => {
+	test("video attach", () => {
 		const content = {
 			text: "#attach foo.mp4",
 			attaches: [{
@@ -15,6 +15,11 @@ describe("Attachment Parser Test", () => {
 			"</article>",
 		].join("");
 
+		expect(parser(content)).toBe(result);
+
+		content.text = "#attach foo.webm";
+		content.attaches[0].name = "foo.webm";
+		content.attaches[0].signature = [0x1a, 0x45, 0xdf, 0xa3, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 0x42, 0x86, 0x81, 0x01];
 		expect(parser(content)).toBe(result);
 	});
 
