@@ -271,6 +271,8 @@ const attachParser: LineParser = (line, config) => {
 		return `<video controls src="${attach.link}" />`;
 	case AttachCategory.IMAGE:
 		return `<img src="${attach.link}">`;
+	case AttachCategory.AUDIO:
+		return `<audio controls src="${attach.link}" />`;
 	default:
 		return `<a href="${attach.link}" target="_blank">${attach.name}</a>`;
 	}
