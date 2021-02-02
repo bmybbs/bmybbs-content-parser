@@ -274,7 +274,25 @@ const attachParser: LineParser = (line, config) => {
 	case AttachCategory.AUDIO:
 		return `<audio controls src="${attach.link}" />`;
 	default:
-		return `<a href="${attach.link}" target="_blank">${attach.name}</a>`;
+		let icon = "text";
+		switch (attach_type.type) {
+		case AttachType.ANDROID:     icon = "android";    break;
+		case AttachType.COMPRESSION: icon = "zip";        break;
+		case AttachType.CHM:
+		case AttachType.EPUB:
+		case AttachType.PDF:         icon = "pdf";        break;
+		case AttachType.DEB:         icon = "debian";     break;
+		case AttachType.DLL:         icon = "gears";      break;
+		case AttachType.ELF:         icon = "binary";     break;
+		case AttachType.IOS:         icon = "apple";      break;
+		case AttachType.JAVA:        icon = "java";       break;
+		case AttachType.MSDOCX:      icon = "word";       break;
+		case AttachType.MSPPTX:      icon = "powerpoint"; break;
+		case AttachType.MSXLSX:      icon = "excel";      break;
+		case AttachType.RPM:         icon = "red-hat";    break;
+		case AttachType.SHELL:       icon = "terminal";   break;
+		}
+		return `<div class="bmy-attach"><span class="${icon}-icon"></span><a href="${attach.link}" target="_blank">${attach.name}</a></div>`;
 	}
 }
 
