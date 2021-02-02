@@ -266,11 +266,12 @@ const attachParser: LineParser = (line, config) => {
 	const attach = config.attaches.get(attachname);
 	const attach_type = getFileType(attach.signature, attach.name);
 
-	if (attach_type.category === AttachCategory.VIDEO) {
+	switch (attach_type.category) {
+	case AttachCategory.VIDEO:
 		return `<video controls src="${attach.link}" />`;
-	} else if (attach_type.category === AttachCategory.IMAGE) {
+	case AttachCategory.IMAGE:
 		return `<img src="${attach.link}">`;
-	} else {
+	default:
 		return `<a href="${attach.link}" target="_blank">${attach.name}</a>`;
 	}
 }
