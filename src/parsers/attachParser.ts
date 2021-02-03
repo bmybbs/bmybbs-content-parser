@@ -282,7 +282,8 @@ const attachParser: LineParser = (line, config) => {
 		case AttachType.EPUB:
 		case AttachType.PDF:         icon = "pdf";        break;
 		case AttachType.DEB:         icon = "debian";     break;
-		case AttachType.DLL:         icon = "gears";      break;
+		case AttachType.EXE:
+		case AttachType.DLL:         icon = "windows";    break;
 		case AttachType.ELF:         icon = "binary";     break;
 		case AttachType.IOS:         icon = "apple";      break;
 		case AttachType.JAVA:        icon = "java";       break;
