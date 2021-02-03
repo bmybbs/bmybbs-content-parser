@@ -189,6 +189,19 @@ describe("Attachment Parser Test", () => {
 		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
 
+		filename = "foo.chm";
+		content = {
+			text: `#attach ${filename}`,
+			attaches: [{
+				name: filename,
+				link: "foo",
+				signature: [0x49, 0x54, 0x53, 0x46, 0x03, 0x00, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00],
+			}]
+		};
+		result[2] = "<span class=\"pdf-icon\"></span>";
+		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		expect(parser(content)).toBe(result.join(""));
+
 		filename = "typescript.epub";
 		content = {
 			text: `#attach ${filename}`,
