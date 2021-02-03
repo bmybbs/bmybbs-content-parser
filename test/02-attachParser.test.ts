@@ -331,6 +331,32 @@ describe("Attachment Parser Test", () => {
 		result[2] = "<span class=\"binary-icon\"></span>";
 		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
+
+		filename = "influxdb.rpm"
+		content = {
+			text: `#attach ${filename}`,
+			attaches: [{
+				name: filename,
+				link: "foo",
+				signature: [0xed, 0xab, 0xee, 0xdb, 0x03, 0x00, 0x00, 0x00, 0x00, 0x01, 0x69, 0x6e, 0x66, 0x6c, 0x75, 0x78],
+			}]
+		};
+		result[2] = "<span class=\"red-hat-icon\"></span>";
+		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		expect(parser(content)).toBe(result.join(""));
+
+		filename = "vscode.deb"
+		content = {
+			text: `#attach ${filename}`,
+			attaches: [{
+				name: filename,
+				link: "foo",
+				signature: [0x21, 0x3c, 0x61, 0x72, 0x63, 0x68, 0x3e, 0x0a, 0x64, 0x65, 0x62, 0x69, 0x61, 0x6e, 0x2d, 0x62],
+			}]
+		};
+		result[2] = "<span class=\"debian-icon\"></span>";
+		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		expect(parser(content)).toBe(result.join(""));
 	});
 });
 
