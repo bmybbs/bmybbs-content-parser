@@ -279,6 +279,58 @@ describe("Attachment Parser Test", () => {
 		result[2] = "<span class=\"zip-icon\"></span>";
 		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
+
+		filename = "rc.local";
+		content = {
+			text: `#attach ${filename}`,
+			attaches: [{
+				name: filename,
+				link: "foo",
+				signature: [0x23, 0x21, 0x2f, 0x62, 0x69, 0x6e, 0x2f, 0x73, 0x68, 0x20, 0x2d, 0x65, 0x0a, 0x23, 0x0a, 0x23],
+			}]
+		};
+		result[2] = "<span class=\"terminal-icon\"></span>";
+		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		expect(parser(content)).toBe(result.join(""));
+
+		filename = "setup.exe";
+		content = {
+			text: `#attach ${filename}`,
+			attaches: [{
+				name: filename,
+				link: "foo",
+				signature: [0x4d, 0x5a, 0x90, 0x00, 0x03, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xff, 0xff, 0x00, 0x00],
+			}]
+		};
+		result[2] = "<span class=\"windows-icon\"></span>";
+		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		expect(parser(content)).toBe(result.join(""));
+
+		filename = "mscorlib.dll";
+		content = {
+			text: `#attach ${filename}`,
+			attaches: [{
+				name: filename,
+				link: "foo",
+				signature: [0x4d, 0x5a, 0x90, 0x00, 0x03, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xff, 0xff, 0x00, 0x00],
+			}]
+		};
+		result[2] = "<span class=\"windows-icon\"></span>";
+		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		expect(parser(content)).toBe(result.join(""));
+
+		filename = "libc.so";
+		content = {
+			text: `#attach ${filename}`,
+			attaches: [{
+				name: filename,
+				link: "foo",
+				signature: [0x7f, 0x45, 0x4c, 0x46, 0x02, 0x01, 0x01, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00],
+			}]
+		};
+		result[2] = "<span class=\"binary-icon\"></span>";
+		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		expect(parser(content)).toBe(result.join(""));
 	});
 });
 
