@@ -370,6 +370,32 @@ describe("Attachment Parser Test", () => {
 		result[2] = "<span class=\"debian-icon\"></span>";
 		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
+
+		filename = "foo.class"
+		content = {
+			text: `#attach ${filename}`,
+			attaches: [{
+				name: filename,
+				link: "foo",
+				signature: [0xca, 0xfe, 0xba, 0xbe, 0x00, 0x00, 0x00, 0x33, 0x01, 0x12, 0x0a, 0x00, 0x39, 0x00, 0x8d, 0x0b],
+			}]
+		};
+		result[2] = "<span class=\"java-icon\"></span>";
+		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		expect(parser(content)).toBe(result.join(""));
+
+		filename = "spring-core.jar"
+		content = {
+			text: `#attach ${filename}`,
+			attaches: [{
+				name: filename,
+				link: "foo",
+				signature: [0x50, 0x4b, 0x03, 0x04, 0x0a, 0x00, 0x00, 0x08, 0x08, 0x00, 0x23, 0x0c, 0xff, 0x46, 0x00, 0x00],
+			}]
+		};
+		result[2] = "<span class=\"java-icon\"></span>";
+		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		expect(parser(content)).toBe(result.join(""));
 	});
 });
 
