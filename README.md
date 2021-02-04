@@ -94,7 +94,63 @@ TBD
 
 可以使用 [PrismJS](https://github.com/PrismJS/prism) 渲染，Webpack 需要借助 [babel-plugin-prismjs](https://github.com/mAAdhaTTah/babel-plugin-prismjs) 打包。
 
-TBD
+* 标注类: `markup`(默认)、`html`、`xml`、`svg`
+* Bash - `bash`、`shell`
+* Batch - `batch`
+* C - `c`
+* C# - `csharp`、`cs`、`dotnet`
+* C++ - `cpp`
+* CMake - `cmake`
+* CSS - `css`
+* Diff - `diff`
+* Docker - `docker`、`dockerfile`
+* DOT(Graphviz) - `dot`、`gv`
+* Erlang - `erlang`
+* Fortran - `fortran`
+* Go - `go`
+* GraphQL - `graphql`
+* Groovy - `groovy`
+* Haskell - `haskell`、`hs`
+* Ini - `ini`
+* Java - `java`
+* JavaScript - `javascript`、`js`
+* JSON - `json`
+* LaTeX - `latex`、`tex`、`context`
+* Less - `less`
+* LilyPond - `lilypond`、`ly`
+* Lisp - `lisp`、`emacs`
+* Lua - `lua`
+* Makefile - `makefile`
+* Markdown - `markdown`、`md`
+* MATLAB - `matlab`
+* NASM - `nasm`
+* nginx - `nginx`
+* Objective-C - `objc`
+* OpenCL - `opencl`
+* Perl - `perl`
+* PHP - `php`
+* Prolog - `prolog`
+* Python - `python`、`py`
+* R - `r`
+* React - `jsx`、`tsx`
+* Regex - `regex`
+* reST(reStructuredText) - `rest`
+* Ruby - `ruby`、`rb`
+* Rust - `rust`
+* Sass(Sass) - `sass`
+* Sass(Scss) - `scss`
+* Scala - `scala`
+* Scheme - `scheme`
+* SQL - `sql`
+* Tcl - `tcl`
+* TypeScript - `typescript`、`ts`
+* UnrealScript - `unrealscript`、`uscript`、`uc`
+* Verilog - `verilog`
+* VHDL - `vhdl`
+* vim - `vim`
+* WebAssembly - `wasm`
+* Wiki - `wiki`
+* YAML - `yaml`、`yml`
 
 ## License
 
