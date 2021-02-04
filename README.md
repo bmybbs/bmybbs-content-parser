@@ -28,7 +28,7 @@ npm install --save git://github.com/bmybbs/bmybbs-content-parser.git
 ```javascript
 import BMYParser from "@bmybbs/bmybbs-content-parser"
 
-(async () => {
+(() => {
   let content = {
     text: [
       "#attach bmybbs.png",

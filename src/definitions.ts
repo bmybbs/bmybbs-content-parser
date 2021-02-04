@@ -5,7 +5,7 @@ export interface ParseStates {
 export interface Attach {
 	name: string;
 	link: string;
-	signature: Uint8Array;
+	signature: number[];
 }
 
 export interface BMYContent {
@@ -18,6 +18,6 @@ export interface BMYParserConfig {
 	attaches: Map<string, Attach>;
 }
 
-export type LineParser = (line: string, config: BMYParserConfig) => Promise<string | string[]>;
+export type LineParser = (line: string, config: BMYParserConfig) => string | string[];
 
-export type BMYParser = (content: BMYContent) => Promise<string>;
+export type BMYParser = (content: BMYContent) => string;
