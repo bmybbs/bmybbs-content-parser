@@ -28,6 +28,19 @@ describe("Code Block Parser Test", () => {
 		expect(parser(content)).toBe(result);
 	});
 
+	test("code block with lines", () => {
+		const content = { text: "```c\n#include <stdio.h>\n```", attaches: [] },
+			result = [
+			"<article>",
+			"<pre><code class=\"language-c\">",
+			"#include &lt;stdio.h&gt;\n",
+			"</code></pre>",
+			"</article>"
+		].join("");
+
+		expect(parser(content)).toBe(result);
+	});
+
 	// TODO
 });
 
