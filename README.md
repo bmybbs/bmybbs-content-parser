@@ -104,7 +104,6 @@ TBD
 * CSS - `css`
 * Diff - `diff`
 * Docker - `docker`、`dockerfile`
-* DOT(Graphviz) - `dot`、`gv`
 * Erlang - `erlang`
 * Fortran - `fortran`
 * Go - `go`
