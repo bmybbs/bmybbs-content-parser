@@ -15,7 +15,7 @@
 * 附件中只有图片会被转换使用 `<img>` 标签显示。其实还有 Flash 格式，只不过已经越来越少被使用了。相反随着技术发展，`<video>` 和 `<audio>` 多媒体技术早已广泛使用，而 NJU 09 中一直没有实现。
 * 同样对于未来可能需要引入新的“语法”，例如类似 Markdown 的代码块 (**WIP**)、链接。
 
-因此，本项目的目标在于使用 JavaScript 实现一套 BMYBBS 内容“语法”的转换实现。以下示例中控制字符 `\033` 使用 `*` 表示，例如 `*[0m` 代表的内容是 `\033[0m`。
+因此，本项目的目标在于使用 JavaScript 实现一套 BMYBBS 内容“语法”的转换实现。
 
 ## 安装
 
@@ -35,7 +35,7 @@ import BMYParser from "@bmybbs/bmybbs-content-parser"
       "```javascript",
       "var foo = 42;",
       "```",
-      "*[1;31mhello world*[0m"
+      "\x1b[1;31mhello world\x1b[0m"
     ].join("\n"),
     attaches: [{
       name: "bmybbs.png",
@@ -44,7 +44,7 @@ import BMYParser from "@bmybbs/bmybbs-content-parser"
     }]
   }; // 通常由接口返回，也可以在浏览器内生成，以便预览
 
-  console.log(await BMYParser(content));
+  console.log(BMYParser(content));
 })();
 ```
 
