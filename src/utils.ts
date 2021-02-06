@@ -25,8 +25,6 @@ langSets.add("css");
 langSets.add("diff");
 langSets.add("docker");
 langSets.add("dockerfile");
-langSets.add("dot");
-langSets.add("gv");
 langSets.add("erlang");
 langSets.add("fortran");
 langSets.add("go");
