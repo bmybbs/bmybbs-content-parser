@@ -5,6 +5,7 @@ export interface ParseStates {
 export interface Attach {
 	name: string;
 	link: string;
+	size: number;
 	signature: number[];
 }
 

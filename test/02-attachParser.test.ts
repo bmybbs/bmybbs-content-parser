@@ -7,26 +7,31 @@ describe("Attachment Parser Test", () => {
 			text: "#attach foo.mp4",
 			attaches: [{
 				name: "foo.mp4",
+				size: 1320775,
 				link: "http://example.com",
 				signature: [0x00, 0x00, 0x00, 0x18, 0x66, 0x74, 0x79, 0x70, 0x69, 0x73, 0x6F, 0x6D],
 			}]
 		}, result = [
-			"<article>",
+			"<article>视频: <a href=\"http://example.com\" target=\"_blank\">",
+			"foo.mp4",
+			"</a> (1.26 MB)<br>",
 			"<video controls src=\"http://example.com\" />",
 			"</article>",
-		].join("");
+		];
 
-		expect(parser(content)).toBe(result);
+		expect(parser(content)).toBe(result.join(""));
 
 		content.text = "#attach foo.webm";
 		content.attaches[0].name = "foo.webm";
 		content.attaches[0].signature = [0x1a, 0x45, 0xdf, 0xa3, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x1f, 0x42, 0x86, 0x81, 0x01];
-		expect(parser(content)).toBe(result);
+		result[1] = "foo.webm";
+		expect(parser(content)).toBe(result.join(""));
 
 		content.text = "#attach foo.ogv";
 		content.attaches[0].name = "foo.ogv";
 		content.attaches[0].signature = [0x4f, 0x67, 0x67, 0x53, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xef, 0x67];
-		expect(parser(content)).toBe(result);
+		result[1] = "foo.ogv";
+		expect(parser(content)).toBe(result.join(""));
 	});
 
 	test("no attach", () => {
@@ -51,11 +56,12 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: "foo.jpg",
 				link: "http://example.com",
+				size: 10240,
 				signature: [0xff, 0xd8, 0xff, 0xe0, 0x00, 0x10, 0x4a, 0x46, 0x49, 0x46, 0x00, 0x01, 0x01, 0x01, 0x00, 0x01],
 			}]
 		},
 		result = [
-			"<article>",
+			"<article>图片: <a href=\"http://example.com\" target=\"_blank\">foo.jpg</a> (10.00 KB)<br>",
 			"<img src=\"http://example.com\">",
 			"</article>"
 		].join("");
@@ -82,25 +88,29 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: "foo.mp3",
 				link: "http://example.com",
+				size: 100,
 				signature: [0x49, 0x44, 0x33, 0x03, 0x00, 0x00, 0x00, 0x00, 0x11, 0x30, 0x54, 0x49, 0x54, 0x32, 0x00, 0x00],
 			}]
 		}, result = [
-			"<article>",
+			"<article>音频: <a href=\"http://example.com\" target=\"_blank\">",
+			"foo.mp3",
+			"</a> (100 B)<br>",
 			"<audio controls src=\"http://example.com\" />",
 			"</article>",
-		].join("");
+		];
 
-		expect(parser(content)).toBe(result);
+		expect(parser(content)).toBe(result.join(""));
 
 		// wav
 		content.attaches[0].signature = [0x52, 0x49, 0x46, 0x46, 0x3a, 0x60, 0x10, 0x00, 0x57, 0x41, 0x56, 0x45, 0x66, 0x6d, 0x74, 0x20];
-		expect(parser(content)).toBe(result);
+		expect(parser(content)).toBe(result.join(""));
 
 		// ogg
 		content.text = "#attach foo.ogg";
 		content.attaches[0].name = "foo.ogg";
 		content.attaches[0].signature = [0x4f, 0x67, 0x67, 0x53, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x53, 0xbc];
-		expect(parser(content)).toBe(result);
+		result[1] = "foo.ogg";
+		expect(parser(content)).toBe(result.join(""));
 	});
 
 	test("attach icon", () => {
@@ -111,7 +121,9 @@ describe("Attachment Parser Test", () => {
 			"<article>",
 			"<div class=\"bmy-attach\">",
 			null,
+			"<span>附件: ",
 			null,
+			" (100 B)</span>",
 			"</div>",
 			"</article>"
 		];
@@ -122,11 +134,12 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: filename,
 				link: "foo",
+				size: 100,
 				signature: [0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00],
 			}]
 		};
 		result[2] = "<span class=\"powerpoint-icon\"></span>";
-		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		result[4] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
 
 		filename = "01.pptx";
@@ -135,11 +148,12 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: filename,
 				link: "foo",
+				size: 100,
 				signature: [0x50, 0x4b, 0x03, 0x04, 0x14, 0x00, 0x06, 0x00, 0x08, 0x00, 0x00, 0x00, 0x21, 0x00, 0xfc, 0x83],
 			}]
 		};
 		result[2] = "<span class=\"powerpoint-icon\"></span>";
-		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		result[4] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
 
 		filename = "02.xls";
@@ -148,11 +162,12 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: filename,
 				link: "foo",
+				size: 100,
 				signature: [0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00],
 			}]
 		};
 		result[2] = "<span class=\"excel-icon\"></span>";
-		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		result[4] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
 
 		filename = "02.xlsx";
@@ -161,11 +176,12 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: filename,
 				link: "foo",
+				size: 100,
 				signature: [0x50, 0x4b, 0x03, 0x04, 0x14, 0x00, 0x00, 0x00, 0x08, 0x00, 0x00, 0x00, 0x21, 0x00, 0x6f, 0xbe],
 			}]
 		};
 		result[2] = "<span class=\"excel-icon\"></span>";
-		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		result[4] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
 
 		filename = "03.doc";
@@ -174,11 +190,12 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: filename,
 				link: "foo",
+				size: 100,
 				signature: [0xd0, 0xcf, 0x11, 0xe0, 0xa1, 0xb1, 0x1a, 0xe1, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00],
 			}]
 		};
 		result[2] = "<span class=\"word-icon\"></span>";
-		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		result[4] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
 
 		filename = "03.docx";
@@ -187,11 +204,12 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: filename,
 				link: "foo",
+				size: 100,
 				signature: [0x50, 0x4b, 0x03, 0x04, 0x14, 0x00, 0x06, 0x00, 0x08, 0x00, 0x00, 0x00, 0x21, 0x00, 0x09, 0x24],
 			}]
 		};
 		result[2] = "<span class=\"word-icon\"></span>";
-		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		result[4] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
 
 		filename = "foo.chm";
@@ -200,11 +218,12 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: filename,
 				link: "foo",
+				size: 100,
 				signature: [0x49, 0x54, 0x53, 0x46, 0x03, 0x00, 0x00, 0x00, 0x60, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00, 0x00],
 			}]
 		};
 		result[2] = "<span class=\"pdf-icon\"></span>";
-		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		result[4] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
 
 		filename = "typescript.epub";
@@ -213,11 +232,12 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: filename,
 				link: "foo",
+				size: 100,
 				signature: [0x50, 0x4b, 0x03, 0x04, 0x14, 0x00, 0x08, 0x00, 0x08, 0x00, 0xc0, 0x61, 0x95, 0x51, 0x00, 0x00],
 			}]
 		};
 		result[2] = "<span class=\"pdf-icon\"></span>";
-		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		result[4] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
 
 		filename = "04.pdf";
@@ -226,11 +246,12 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: filename,
 				link: "foo",
+				size: 100,
 				signature: [0x25, 0x50, 0x44, 0x46, 0x2d, 0x31, 0x2e, 0x35, 0x0d, 0x0a, 0x25, 0xb5, 0xb5, 0xb5, 0xb5, 0x0d],
 			}]
 		};
 		result[2] = "<span class=\"pdf-icon\"></span>";
-		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		result[4] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
 
 		filename = "08.apk";
@@ -239,11 +260,12 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: filename,
 				link: "foo",
+				size: 100,
 				signature: [0x50, 0x4b, 0x03, 0x04, 0x14, 0x00, 0x08, 0x08, 0x08, 0x00, 0x5d, 0x78, 0x4d, 0x45, 0x00, 0x00],
 			}]
 		};
 		result[2] = "<span class=\"android-icon\"></span>";
-		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		result[4] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
 
 		filename = "09.ipa";
@@ -252,11 +274,12 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: filename,
 				link: "foo",
+				size: 100,
 				signature: [0x50, 0x4b, 0x03, 0x04, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0x2a, 0x49, 0x90, 0x47, 0x00, 0x00],
 			}]
 		};
 		result[2] = "<span class=\"apple-icon\"></span>";
-		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		result[4] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
 
 		filename = "10.7z";
@@ -265,11 +288,12 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: filename,
 				link: "foo",
+				size: 100,
 				signature: [0x37, 0x7a, 0xbc, 0xaf, 0x27, 0x1c, 0x00, 0x04, 0x62, 0x6e, 0x91, 0xf8, 0x1e, 0x00, 0x00, 0x00],
 			}]
 		};
 		result[2] = "<span class=\"zip-icon\"></span>";
-		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		result[4] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
 
 		filename = "10.gz";
@@ -278,11 +302,12 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: filename,
 				link: "foo",
+				size: 100,
 				signature: [0x1f, 0x8b, 0x08, 0x08, 0xe2, 0x59, 0x19, 0x60, 0x04, 0x00, 0x31, 0x30, 0x2e, 0x37, 0x7a, 0x00],
 			}]
 		};
 		result[2] = "<span class=\"zip-icon\"></span>";
-		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		result[4] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
 
 		filename = "10.xz";
@@ -291,11 +316,12 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: filename,
 				link: "foo",
+				size: 100,
 				signature: [0xfd, 0x37, 0x7a, 0x58, 0x5a, 0x00, 0x00, 0x01, 0x69, 0x22, 0xde, 0x36, 0x02, 0x00, 0x21, 0x01],
 			}]
 		};
 		result[2] = "<span class=\"zip-icon\"></span>";
-		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		result[4] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
 
 		filename = "10.zip";
@@ -304,11 +330,12 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: filename,
 				link: "foo",
+				size: 100,
 				signature: [0x50, 0x4b, 0x03, 0x04, 0x0a, 0x00, 0x00, 0x00, 0x00, 0x00, 0xf8, 0xae, 0x42, 0x52, 0xc5, 0x7a],
 			}]
 		};
 		result[2] = "<span class=\"zip-icon\"></span>";
-		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		result[4] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
 
 		filename = "foo.rar";
@@ -317,11 +344,12 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: filename,
 				link: "foo",
+				size: 100,
 				signature: [0x52, 0x61, 0x72, 0x21, 0x1a, 0x07, 0x00, 0xcf, 0x90, 0x73, 0x00, 0x00, 0x0d, 0x00, 0x00, 0x00],
 			}]
 		};
 		result[2] = "<span class=\"zip-icon\"></span>";
-		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		result[4] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
 
 		filename = "foo.lz4";
@@ -330,11 +358,12 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: filename,
 				link: "foo",
+				size: 100,
 				signature: [0x04, 0x22, 0x4d, 0x18, 0x64, 0x40, 0xa7, 0xc0, 0x00, 0x00, 0x80, 0xfd, 0x37, 0x7a, 0x58, 0x5a],
 			}]
 		};
 		result[2] = "<span class=\"zip-icon\"></span>";
-		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		result[4] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
 
 		filename = "rc.local";
@@ -343,11 +372,12 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: filename,
 				link: "foo",
+				size: 100,
 				signature: [0x23, 0x21, 0x2f, 0x62, 0x69, 0x6e, 0x2f, 0x73, 0x68, 0x20, 0x2d, 0x65, 0x0a, 0x23, 0x0a, 0x23],
 			}]
 		};
 		result[2] = "<span class=\"terminal-icon\"></span>";
-		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		result[4] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
 
 		filename = "setup.exe";
@@ -356,11 +386,12 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: filename,
 				link: "foo",
+				size: 100,
 				signature: [0x4d, 0x5a, 0x90, 0x00, 0x03, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xff, 0xff, 0x00, 0x00],
 			}]
 		};
 		result[2] = "<span class=\"windows-icon\"></span>";
-		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		result[4] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
 
 		filename = "mscorlib.dll";
@@ -369,11 +400,12 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: filename,
 				link: "foo",
+				size: 100,
 				signature: [0x4d, 0x5a, 0x90, 0x00, 0x03, 0x00, 0x00, 0x00, 0x04, 0x00, 0x00, 0x00, 0xff, 0xff, 0x00, 0x00],
 			}]
 		};
 		result[2] = "<span class=\"windows-icon\"></span>";
-		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		result[4] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
 
 		filename = "libc.so";
@@ -382,11 +414,12 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: filename,
 				link: "foo",
+				size: 100,
 				signature: [0x7f, 0x45, 0x4c, 0x46, 0x02, 0x01, 0x01, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00],
 			}]
 		};
 		result[2] = "<span class=\"binary-icon\"></span>";
-		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		result[4] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
 
 		filename = "influxdb.rpm"
@@ -395,11 +428,12 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: filename,
 				link: "foo",
+				size: 100,
 				signature: [0xed, 0xab, 0xee, 0xdb, 0x03, 0x00, 0x00, 0x00, 0x00, 0x01, 0x69, 0x6e, 0x66, 0x6c, 0x75, 0x78],
 			}]
 		};
 		result[2] = "<span class=\"red-hat-icon\"></span>";
-		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		result[4] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
 
 		filename = "vscode.deb"
@@ -408,11 +442,12 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: filename,
 				link: "foo",
+				size: 100,
 				signature: [0x21, 0x3c, 0x61, 0x72, 0x63, 0x68, 0x3e, 0x0a, 0x64, 0x65, 0x62, 0x69, 0x61, 0x6e, 0x2d, 0x62],
 			}]
 		};
 		result[2] = "<span class=\"debian-icon\"></span>";
-		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		result[4] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
 
 		filename = "foo.class"
@@ -421,11 +456,12 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: filename,
 				link: "foo",
+				size: 100,
 				signature: [0xca, 0xfe, 0xba, 0xbe, 0x00, 0x00, 0x00, 0x33, 0x01, 0x12, 0x0a, 0x00, 0x39, 0x00, 0x8d, 0x0b],
 			}]
 		};
 		result[2] = "<span class=\"java-icon\"></span>";
-		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		result[4] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
 
 		filename = "spring-core.jar"
@@ -434,11 +470,12 @@ describe("Attachment Parser Test", () => {
 			attaches: [{
 				name: filename,
 				link: "foo",
+				size: 100,
 				signature: [0x50, 0x4b, 0x03, 0x04, 0x0a, 0x00, 0x00, 0x08, 0x08, 0x00, 0x23, 0x0c, 0xff, 0x46, 0x00, 0x00],
 			}]
 		};
 		result[2] = "<span class=\"java-icon\"></span>";
-		result[3] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
+		result[4] = `<a href=\"foo\" target=\"_blank\">${filename}</a>`;
 		expect(parser(content)).toBe(result.join(""));
 	});
 });

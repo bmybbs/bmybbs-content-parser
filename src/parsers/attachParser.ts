@@ -1,5 +1,6 @@
 import { LineParser } from "../definitions"
 import plainTextParser from "./plainTextParser"
+import { readableSize } from "../utils"
 
 enum AttachCategory {
 	FILE,     ///< 普通文件
@@ -265,14 +266,15 @@ const attachParser: LineParser = (line, config) => {
 
 	const attach = config.attaches.get(attachname);
 	const attach_type = getFileType(attach.signature, attach.name);
+	const size = readableSize(attach.size);
 
 	switch (attach_type.category) {
 	case AttachCategory.VIDEO:
-		return `<video controls src="${attach.link}" />`;
+		return `视频: <a href="${attach.link}" target="_blank">${attach.name}</a> (${size})<br><video controls src="${attach.link}" />`;
 	case AttachCategory.IMAGE:
-		return `<img src="${attach.link}">`;
+		return `图片: <a href="${attach.link}" target="_blank">${attach.name}</a> (${size})<br><img src="${attach.link}">`;
 	case AttachCategory.AUDIO:
-		return `<audio controls src="${attach.link}" />`;
+		return `音频: <a href="${attach.link}" target="_blank">${attach.name}</a> (${size})<br><audio controls src="${attach.link}" />`;
 	default:
 		let icon = "text";
 		switch (attach_type.type) {
@@ -293,7 +295,7 @@ const attachParser: LineParser = (line, config) => {
 		case AttachType.RPM:         icon = "red-hat";    break;
 		case AttachType.SHELL:       icon = "terminal";   break;
 		}
-		return `<div class="bmy-attach"><span class="${icon}-icon"></span><a href="${attach.link}" target="_blank">${attach.name}</a></div>`;
+		return `<div class="bmy-attach"><span class="${icon}-icon"></span><span>附件: <a href="${attach.link}" target="_blank">${attach.name}</a> (${size})</span></div>`;
 	}
 }
 
