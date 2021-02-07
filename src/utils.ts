@@ -86,9 +86,25 @@ langSets.add("wiki");
 langSets.add("yaml");
 langSets.add("yml");
 
+const readableSize = (size: number): string => {
+	let str: string;
+	if (size >= 1024 * 1024) {
+		str = (size / 1024 / 1024).toFixed(2);
+		str = `${str} MB`;
+	} else if (size >= 1024) {
+		str = (size / 1024).toFixed(2);
+		str = `${str} KB`;
+	} else {
+		str = `${size} B`;
+	}
+
+	return str;
+};
+
 export {
 	escapeHtml,
 	langSets,
 	langFallback,
+	readableSize,
 };
 
