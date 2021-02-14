@@ -13,7 +13,7 @@ const codeblockParser: LineParser = (line, config) => {
 			// TODO 终止之前的状态
 
 			config.states.isInCodeBlock = true;
-			const lang = line.substring(3).toLowerCase();
+			const lang = line.substring(3).toLowerCase().trim();
 			const langstr = langSets.has(lang) ? lang : langFallback;
 
 			return `<pre><code class="language-${langstr}">`;
