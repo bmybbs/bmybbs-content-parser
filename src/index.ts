@@ -15,8 +15,10 @@ const bmyParser: BMYParser = (content) => {
 	});
 
 	const line_array = content.text.split("\n");
+	const config = { states, attaches };
+
 	for (const line of line_array) {
-		const result = lineParser(line, { states, attaches });
+		const result = lineParser(line, config);
 		if (Array.isArray(result)) {
 			result.forEach((el) => {
 				html.push(el);
@@ -24,6 +26,10 @@ const bmyParser: BMYParser = (content) => {
 		} else {
 			html.push(result);
 		}
+	}
+
+	if (config.states.isInBlockQuote) {
+		html.push("</blockquote>");
 	}
 
 	html.push("</article>");

@@ -18,5 +18,21 @@ describe("Blockquote Parser Test", () => {
 
 		expect(parser(content)).toBe(result);
 	});
+
+	test("end with quotes", () => {
+		const content = {
+			text: "aaa\n: foo",
+			attaches: []
+		}, result = [
+			"<article>",
+			"<p>aaa</p>",
+			"<blockquote>",
+			"<p>foo</p>",
+			"</blockquote>",
+			"</article>"
+		].join("");
+
+		expect(parser(content)).toBe(result);
+	});
 });
 
