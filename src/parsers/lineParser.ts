@@ -2,6 +2,7 @@ import { LineParser } from "../definitions"
 import codeBlockParser from "./codeblockParser"
 import plainTextParser from "./plainTextParser"
 import attachParser    from "./attachParser"
+import biliParser      from "./biliParser"
 
 const BLOCKQUOTE_STR = "<blockquote>";
 const BLOCKQUOTE_CLOSE_STR = "</blockquote>";
@@ -46,6 +47,10 @@ const lineParser: LineParser = (line, config) => {
 	// 这里可能 attachname 不存在，内部切换为普通文本
 	if (line.startsWith("#attach ")) {
 		return attachParser(line, config);
+	}
+
+	if (line.startsWith("#bilibili ")) {
+		return biliParser(line, config);
 	}
 
 	return plainTextParser(line, config);
