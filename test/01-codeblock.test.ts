@@ -41,6 +41,18 @@ describe("Code Block Parser Test", () => {
 		expect(parser(content)).toBe(result);
 	});
 
+	test("code block without close tag", () => {
+		const content = { text: "```c\n#include <stdio.h>", attaches: [] },
+			result = [
+			"<article>",
+			"<pre><code class=\"language-c\">",
+			"#include &lt;stdio.h&gt;\n",
+			"</code></pre>",
+			"</article>"
+		].join("");
+
+		expect(parser(content)).toBe(result);
+	});
 	// TODO
 });
 

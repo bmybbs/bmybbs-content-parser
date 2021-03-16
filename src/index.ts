@@ -32,6 +32,10 @@ const bmyParser: BMYParser = (content) => {
 		html.push("</blockquote>");
 	}
 
+	if (config.states.isInCodeBlock) {
+		html.push("</code></pre>");
+	}
+
 	html.push("</article>");
 	return html.join("");
 }
