@@ -5,8 +5,9 @@ const bmyParser: BMYParser = (content) => {
 	const html = [],
 		attaches: Map<string, Attach> = new Map(),
 		states: ParseStates = {
-		isInCodeBlock: false
-	};
+			isInBlockQuote: false,
+			isInCodeBlock: false
+		};
 	html.push("<article>");
 
 	content.attaches.forEach(attach => {

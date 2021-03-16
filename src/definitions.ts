@@ -1,5 +1,6 @@
 export interface ParseStates {
 	isInCodeBlock: boolean;
+	isInBlockQuote?: boolean;
 }
 
 export interface Attach {
