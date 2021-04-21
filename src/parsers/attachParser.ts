@@ -250,7 +250,10 @@ const getFileType = (signature: number[], filename: string): AttachClass => {
 		break;
 	}
 
-	if (isArrayEqual(signature, 4, [0x66, 0x74, 0x79, 0x70, 0x69, 0x73])) {
+	if (isArrayEqual(signature, 4, [0x66, 0x74, 0x79, 0x70, 0x69, 0x73])
+		|| isArrayEqual(signature, 4, [0x66, 0x74, 0x79, 0x70, 0x4D, 0x53, 0x4E, 0x56])
+		|| isArrayEqual(signature, 4, [0x66, 0x74, 0x79, 0x70, 0x6D, 0x70, 0x34, 0x32])
+		) {
 		file_type.category = AttachCategory.VIDEO;
 		file_type.type = AttachType.MP4;
 	}
@@ -270,11 +273,11 @@ const attachParser: LineParser = (line, config) => {
 
 	switch (attach_type.category) {
 	case AttachCategory.VIDEO:
-		return `视频: <a href="${attach.link}" target="_blank">${attach.name}</a> (${size})<br><video controls src="${attach.link}" />`;
+		return `视频: <a href="${attach.link}" target="_blank">${attach.name}</a> (${size})<br><video controls src="${attach.link}"></video>`;
 	case AttachCategory.IMAGE:
 		return `图片: <a href="${attach.link}" target="_blank">${attach.name}</a> (${size})<br><img src="${attach.link}">`;
 	case AttachCategory.AUDIO:
-		return `音频: <a href="${attach.link}" target="_blank">${attach.name}</a> (${size})<br><audio controls src="${attach.link}" />`;
+		return `音频: <a href="${attach.link}" target="_blank">${attach.name}</a> (${size})<br><audio controls src="${attach.link}"></audio>`;
 	default:
 		let icon = "text";
 		switch (attach_type.type) {
