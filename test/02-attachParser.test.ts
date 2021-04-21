@@ -15,7 +15,7 @@ describe("Attachment Parser Test", () => {
 			"<article>视频: <a href=\"http://example.com\" target=\"_blank\">",
 			"foo.mp4",
 			"</a> (1.26 MB)<br>",
-			"<video controls src=\"http://example.com\" />",
+			"<video controls src=\"http://example.com\"></video>",
 			"</article>",
 		];
 
@@ -95,7 +95,7 @@ describe("Attachment Parser Test", () => {
 			"<article>音频: <a href=\"http://example.com\" target=\"_blank\">",
 			"foo.mp3",
 			"</a> (100 B)<br>",
-			"<audio controls src=\"http://example.com\" />",
+			"<audio controls src=\"http://example.com\"></audio>",
 			"</article>",
 		];
 

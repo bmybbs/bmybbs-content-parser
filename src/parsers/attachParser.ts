@@ -270,11 +270,11 @@ const attachParser: LineParser = (line, config) => {
 
 	switch (attach_type.category) {
 	case AttachCategory.VIDEO:
-		return `视频: <a href="${attach.link}" target="_blank">${attach.name}</a> (${size})<br><video controls src="${attach.link}" />`;
+		return `视频: <a href="${attach.link}" target="_blank">${attach.name}</a> (${size})<br><video controls src="${attach.link}"></video>`;
 	case AttachCategory.IMAGE:
 		return `图片: <a href="${attach.link}" target="_blank">${attach.name}</a> (${size})<br><img src="${attach.link}">`;
 	case AttachCategory.AUDIO:
-		return `音频: <a href="${attach.link}" target="_blank">${attach.name}</a> (${size})<br><audio controls src="${attach.link}" />`;
+		return `音频: <a href="${attach.link}" target="_blank">${attach.name}</a> (${size})<br><audio controls src="${attach.link}"></audio>`;
 	default:
 		let icon = "text";
 		switch (attach_type.type) {
