@@ -23,4 +23,8 @@ jobs:
         run: yarn build
       - name: Run tests
         run: yarn test
+      - name: Update coverage
+        uses: coverallsapp/github-action@master
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
