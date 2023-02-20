@@ -34,7 +34,7 @@
 		"@typescript-eslint/parser": "^5.49.0",
 		"coveralls": "^3.1.0",
 		"eslint": "^8.33.0",
-		"husky": "^8.0.1",
+		"husky": "^8.0.3",
 		"jest": "^26.6.3",
 		"semantic-release": "^20.1.0",
 		"ts-jest": "^26.4.4",
