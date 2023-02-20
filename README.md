@@ -20,7 +20,7 @@
 ## 安装
 
 ```bash
-npm install --save git://github.com/bmybbs/bmybbs-content-parser.git
+npm install --save @bmybbs/bmybbs-content-parser
 ```
 
 ## 使用
